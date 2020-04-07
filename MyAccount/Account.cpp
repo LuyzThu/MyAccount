@@ -55,7 +55,7 @@ void SavingAccount::deposit(const Date &date, double amount, const string &desc)
 void SavingAccount::settle(const Date &date)
 {
 	double interest = acc.getSum(date)*rate
-		/ date.distance(Date(date.getYear() - 1, 1, 1));
+		/ (date-Date(date.getYear() - 1, 1, 1));
 	if (interest != 0)
 	{
 		record(date, interest, "interest");

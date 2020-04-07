@@ -50,7 +50,7 @@ void SavingAccount::withdraw(Date date, double amount, string desc)
 
 void SavingAccount::settle(Date date)
 {
-	double interest = accumulate(date)*rate / date.distance(Date(date.getYear() - 1, 1, 1));
+	double interest = accumulate(date)*rate / (date-Date(date.getYear() - 1, 1, 1));
 	if (interest != 0)
 	{
 		record(date, interest, "interest");

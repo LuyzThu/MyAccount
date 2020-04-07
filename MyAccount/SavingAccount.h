@@ -28,7 +28,7 @@ private:
 	void error(string msg) const;
 	double accumulate(Date date) const
 	{
-		return accumulation + balance*date.distance(lastDate);
+		return accumulation + balance * (date - lastDate);
 	}
 
 };

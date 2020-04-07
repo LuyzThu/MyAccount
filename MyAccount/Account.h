@@ -16,7 +16,10 @@ public:
 	const string &getId() const { return id; }
 	double getBalance() const { return balance; }
 	static double getTotal() { return total; }
-	void show() const;
+	virtual void deposit(const Date& date, double amount, const string& desc) = 0;
+	virtual void withdraw(const Date& date, double amount, const string& desc) = 0;
+	virtual void show() const;
+	virtual void settle(const Date& date) = 0;
 
 private:
 	string id;
@@ -29,8 +32,8 @@ class SavingAccount :public Account
 public:
 	SavingAccount(const Date &date, const string &id, double rate);
 	double getRate() const { return rate; }
-	void deposit(const Date &date, double amount, const string &desc);
-	void withdraw(const Date &date, double amount, const string &desc);
+	void deposit(const Date& date, double amount, const string& desc);
+	void withdraw(const Date& date, double amount, const string& desc);
 	void settle(const Date &date);
 
 
