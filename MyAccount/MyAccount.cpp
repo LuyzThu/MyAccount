@@ -4,6 +4,7 @@
 #include "stdafx.h"
 #include <iostream>
 #include "Account.h"
+#include "MyArray.h"
 
 using namespace std;
 
@@ -11,24 +12,44 @@ using namespace std;
 int main()
 {
 	Date date(2008, 11, 1);
-	SavingAccount sa1(date, "S3755217", 0.015);
+
+	/*SavingAccount sa1(date, "S3755217", 0.015);
 	SavingAccount sa2(date, "01235486", 0.015);
 	CreditAccount ca(date, "C5392394", 0.0005, 10000, 50);
 
 	Account* accounts[] = { &sa1,&sa2,&ca };
-	int n = sizeof(accounts) / sizeof(Account*);
+	int n = sizeof(accounts) / sizeof(Account*);*/
+
+	MyArray<Account*> accounts(0);
 	cout << "(d)deposit (w)withdraw (s)show (c)change day (n)next month (e)exit" << endl;
 	char cmd;
 	do
 	{
 		date.show();
 		cout << "\tTotal: " << Account::getTotal() << "\tcommand>";
+		char type;
 		int index, day;
-		double amount;
-		string desc;
+		double amount, credit, rate, fee;
+		string id, desc;
+		Account* account;
 		cin >> cmd;
 		switch (cmd)
 		{
+		case 'a':
+			cin >> type >> id;
+			if (type == 's')
+			{
+				cin >> rate;
+				account = new SavingAccount(date, id, rate);
+			}
+			else
+			{
+				cin >> credit >> rate >> fee;
+				account = new CreditAccount(date, id, credit, rate, fee);
+			}
+			accounts.resize(accounts.getSize() + 1);
+			accounts[accounts.getSize() - 1] = account;
+			break;
 		case 'd':
 			cin >> index >> amount;
 			getline(cin, desc);
@@ -40,7 +61,7 @@ int main()
 			accounts[index]->withdraw(date, amount, desc);
 			break;
 		case 's':
-			for (int i = 0; i < n; i++)
+			for (int i = 0; i < accounts.getSize(); i++)
 			{
 				cout << "[" << i << "]";
 				accounts[i]->show();
@@ -69,7 +90,7 @@ int main()
 			{
 				date = Date(date.getYear(), date.getMonth() + 1, 1);
 			}
-			for (int i = 0; i < n; i++)
+			for (int i = 0; i < accounts.getSize(); i++)
 			{
 				accounts[i]->settle(date);
 			}
@@ -86,26 +107,11 @@ int main()
 
 
 	} while (cmd!='e');
+	for (int i = 0; i < accounts.getSize(); i++)
+	{
+		delete accounts[i];
+	}
 
-	//sa1.deposit(Date(2008, 11, 5), 5000, "salary");
-	//ca.withdraw(Date(2008, 11, 15), 2000, "shopping");
-	//sa2.deposit(Date(2008, 11, 25), 10000, "sell stock");
-
-	//ca.settle(Date(2008, 12, 1));
-
-	//ca.deposit(Date(2008, 12, 1), 2016, "repay");
-	//sa1.deposit(Date(2008, 12, 5), 5500, "salary");
-
-	//sa1.settle(Date(2009, 1, 1));
-	//sa2.settle(Date(2009, 1, 1));
-	//ca.settle(Date(2009, 1, 1));
-
-	//cout << endl;
-	//sa1.show(); cout << endl;
-	//sa2.show(); cout << endl;
-	////ca.show(); cout << endl;
-
-	//cout << "Total: " << Account::getTotal() << endl;
 
     return 0;
 }

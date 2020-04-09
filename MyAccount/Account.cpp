@@ -54,13 +54,16 @@ void SavingAccount::deposit(const Date &date, double amount, const string &desc)
 
 void SavingAccount::settle(const Date &date)
 {
-	double interest = acc.getSum(date)*rate
-		/ (date-Date(date.getYear() - 1, 1, 1));
-	if (interest != 0)
+	if (date.getMonth() == 1)
 	{
-		record(date, interest, "interest");
+		double interest = acc.getSum(date) * rate
+			/ (date - Date(date.getYear() - 1, 1, 1));
+		if (interest != 0)
+		{
+			record(date, interest, "interest");
+		}
+		acc.reset(date, getBalance());
 	}
-	acc.reset(date, getBalance());
 }
 
 CreditAccount::CreditAccount(const Date &date, const string &id, double rate, double credit, double fee)
