@@ -4,9 +4,29 @@
 #include "Date.h"
 #include "Accumulator.h"
 #include <string>
+#include <map>
 
 using namespace std;
 
+class Account;
+
+class AccountRec
+{
+public:
+	AccountRec(const Date& date, const Account* account, double amount, double balance, const string& desc);
+	void show();
+
+private:
+	Date date;
+	const Account* account;
+	double amount;
+	double balance;
+	string desc;
+};
+
+
+
+typedef multimap<Date, AccountRec>RecordMap;
 class Account
 {
 public:
@@ -20,11 +40,13 @@ public:
 	virtual void withdraw(const Date& date, double amount, const string& desc) = 0;
 	virtual void show() const;
 	virtual void settle(const Date& date) = 0;
+	static void query(const Date& begin, const Date& end);
 
 private:
 	string id;
 	double balance;
 	static double total;
+	static RecordMap recordMap;
 };
 
 class SavingAccount :public Account

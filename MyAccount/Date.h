@@ -11,6 +11,12 @@ public:
 	int getMaxDay() const;
 	bool isLeapYear() const;
 	void show() const;
+	static Date read();
+	bool operator<(const Date& date) const
+	{
+		return totalDays < date.totalDays;
+	}
+
 	/*int distance(Date date) const
 	{
 		return totalDays - date.totalDays;

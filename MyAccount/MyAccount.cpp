@@ -5,9 +5,18 @@
 #include <iostream>
 #include "Account.h"
 #include "MyArray.h"
+#include <vector>
+#include <algorithm>
 
 using namespace std;
 
+struct deleter
+{
+	template<class T>void operator() (T* p)
+	{
+		delete p;
+	}
+};
 
 int main()
 {
@@ -20,8 +29,10 @@ int main()
 	Account* accounts[] = { &sa1,&sa2,&ca };
 	int n = sizeof(accounts) / sizeof(Account*);*/
 
-	MyArray<Account*> accounts(0);
-	cout << "(d)deposit (w)withdraw (s)show (c)change day (n)next month (e)exit" << endl;
+	//MyArray<Account*> accounts(0);
+
+	vector<Account*>accounts;
+	cout << "(d)deposit (w)withdraw (s)show (c)change day (n)next month (q)query (e)exit" << endl;
 	char cmd;
 	do
 	{
@@ -32,6 +43,7 @@ int main()
 		double amount, credit, rate, fee;
 		string id, desc;
 		Account* account;
+		Date date1, date2;
 		cin >> cmd;
 		switch (cmd)
 		{
@@ -47,8 +59,7 @@ int main()
 				cin >> credit >> rate >> fee;
 				account = new CreditAccount(date, id, credit, rate, fee);
 			}
-			accounts.resize(accounts.getSize() + 1);
-			accounts[accounts.getSize() - 1] = account;
+			accounts.push_back(account);
 			break;
 		case 'd':
 			cin >> index >> amount;
@@ -61,7 +72,7 @@ int main()
 			accounts[index]->withdraw(date, amount, desc);
 			break;
 		case 's':
-			for (int i = 0; i < accounts.getSize(); i++)
+			for (int i = 0; i < accounts.size(); i++)
 			{
 				cout << "[" << i << "]";
 				accounts[i]->show();
@@ -90,27 +101,22 @@ int main()
 			{
 				date = Date(date.getYear(), date.getMonth() + 1, 1);
 			}
-			for (int i = 0; i < accounts.getSize(); i++)
+			for (vector<Account*>::iterator iter = accounts.begin();iter != accounts.end();++iter)
 			{
-				accounts[i]->settle(date);
+				(*iter)->settle(date);
 			}
+			break;
+		case 'q':
+			date1 = Date::read();
+			date2 = Date::read();
+			Account::query(date1, date2);
 			break;
 		default:
 			break;
 		}
 
-
-
-
-
-
-
-
 	} while (cmd!='e');
-	for (int i = 0; i < accounts.getSize(); i++)
-	{
-		delete accounts[i];
-	}
+	for_each(accounts.begin(), accounts.end(), deleter());
 
 
     return 0;
