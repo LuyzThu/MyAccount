@@ -12,8 +12,9 @@ AccountRec::AccountRec(const Date& date, const Account* account, double amount, 
 
 void AccountRec::show()
 {
-	date.show();
-	cout << "\t#" << account->getId() << "\t" << amount << "\t" << balance << "\t" << desc << endl;
+	//date.show();
+
+	cout << date << "\t#" << account->getId() << "\t" << amount << "\t" << balance << "\t" << desc << endl;
 }
 
 
@@ -28,8 +29,8 @@ RecordMap Account::recordMap;
 
 Account::Account(const Date &date, const string &id) :balance(0), id(id)
 {
-	date.show();
-	cout << "\t#" << id << " created" << endl;
+	//date.show();
+	cout << date << "\t#" << id << " created" << endl;
 }
 
 void Account::record(const Date &date, double amount, const string &desc)
@@ -43,9 +44,9 @@ void Account::record(const Date &date, double amount, const string &desc)
 	cout << "\t#" << id << "\t" << amount << "\t" << balance << "\t" << desc << endl;
 }
 
-void Account::show() const
+void Account::show(ostream& out) const
 {
-	cout << id << "\tBalance:" << balance;
+	out << id << "\tBalance:" << balance;
 }
 
 void Account::error(const string &msg) const
@@ -100,7 +101,7 @@ void SavingAccount::settle(const Date &date)
 			/ (date - Date(date.getYear() - 1, 1, 1));
 		if (interest != 0)
 		{
-			record(date, interest, "interest");
+			record(date, interest, " interest");
 		}
 		acc.reset(date, getBalance());
 	}
@@ -143,8 +144,8 @@ void CreditAccount::settle(const Date &date)
 	acc.reset(date, getDebt());
 }
 
-void CreditAccount::show() const
+void CreditAccount::show(ostream& out) const
 {
-	Account::show();
+	Account::show(out);
 	cout << "\tAvailable credit: " << getAvailableCredit();
 }

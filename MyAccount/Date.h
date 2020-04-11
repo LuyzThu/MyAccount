@@ -1,6 +1,9 @@
 #ifndef  _DATE_H_
 #define _DATE_H_
 
+#include <iostream>
+using namespace std;
+
 class Date
 {
 public:
@@ -11,7 +14,8 @@ public:
 	int getMaxDay() const;
 	bool isLeapYear() const;
 	void show() const;
-	static Date read();
+	//static Date read();
+
 	bool operator<(const Date& date) const
 	{
 		return totalDays < date.totalDays;
@@ -32,7 +36,9 @@ private:
 	int year, month, day, totalDays;
 };
 
+istream& operator>>(istream& in, Date& date);
 
+ostream& operator<<(ostream& in, const Date& date);
 
 
 #endif // ! _DATE_H_

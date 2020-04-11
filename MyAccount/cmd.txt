@@ -1,0 +1,9 @@
+a s S1111 0.015
+d 0 5000 salary
+c 15
+d 0 5000 sto
+n
+n
+c 15
+w 0 3000 car
+n

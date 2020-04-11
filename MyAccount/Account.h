@@ -5,6 +5,7 @@
 #include "Accumulator.h"
 #include <string>
 #include <map>
+#include <istream>
 
 using namespace std;
 
@@ -38,7 +39,7 @@ public:
 	static double getTotal() { return total; }
 	virtual void deposit(const Date& date, double amount, const string& desc) = 0;
 	virtual void withdraw(const Date& date, double amount, const string& desc) = 0;
-	virtual void show() const;
+	virtual void show(ostream& out) const;
 	virtual void settle(const Date& date) = 0;
 	static void query(const Date& begin, const Date& end);
 
@@ -49,6 +50,11 @@ private:
 	static RecordMap recordMap;
 };
 
+inline ostream& operator<<(ostream& out, const Account& account)
+{
+	account.show(out);
+	return out;
+}
 class SavingAccount :public Account
 {
 public:
@@ -85,7 +91,7 @@ public:
 	void deposit(const Date &date, double amount, const string &desc);
 	void withdraw(const Date &date, double amount, const string &desc);
 	void settle(const Date &date);
-	void show() const;
+	void show(ostream& out) const;
 
 private:
 	Accumulator acc;

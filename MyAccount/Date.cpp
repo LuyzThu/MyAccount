@@ -47,10 +47,25 @@ void Date::show() const
 	cout << getYear() << "-" << getMonth() << "-" << getDay();
 }
 
-Date Date::read()
+//Date Date::read()
+//{
+//	int year, month, day;
+//	char c1, c2;
+//	cin >> year >> c1 >> month >> c2 >> day;
+//	return Date(year, month, day);
+//}
+
+istream& operator>>(istream& in, Date& date)
 {
 	int year, month, day;
 	char c1, c2;
-	cin >> year >> c1 >> month >> c2 >> day;
-	return Date(year, month, day);
+	in >> year >> c1 >> month >> c2 >> day;
+	date = Date(year, month, day);
+	return in;
+}
+
+ostream& operator<<(ostream& out, const Date& date)
+{
+	out << date.getYear() << "-" << date.getMonth() << "-" << date.getDay();
+	return out;
 }
