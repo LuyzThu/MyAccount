@@ -6,10 +6,26 @@
 #include <string>
 #include <map>
 #include <istream>
-
+#include <stdexcept>
 using namespace std;
 
+
 class Account;
+
+class AccountException:public runtime_error
+{
+public:
+	AccountException(const Account* account, const string& msg) :runtime_error(msg), account(account) {}
+	const Account* getAccount()const { return account; }
+
+private:
+	const Account* account;
+};
+
+
+
+
+
 
 class AccountRec
 {

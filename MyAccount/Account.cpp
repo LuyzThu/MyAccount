@@ -51,7 +51,7 @@ void Account::show(ostream& out) const
 
 void Account::error(const string &msg) const
 {
-	cout << "Error(#" << id << "):" << msg << endl;
+	throw AccountException(this, msg);
 }
 
 void Account::query(const Date& begin, const Date& end)

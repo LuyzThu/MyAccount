@@ -2,6 +2,8 @@
 #include "Date.h"
 
 #include <iostream>
+#include <stdexcept>
+
 using namespace std;
 
 namespace
@@ -13,9 +15,7 @@ Date::Date(int year, int month, int day) :year(year), month(month), day(day)
 {
 	if (day<=0||day>getMaxDay())
 	{
-		cout << "Invalid date" << endl;
-		show();
-		exit(1);
+		throw runtime_error("Invalid date");
 	}
 	int years = year - 1;
 	totalDays = years * 365 + years / 4 - years / 100 + year / 400 + DAYS_BEFORE_MONTH[month - 1] + day;
@@ -60,6 +60,10 @@ istream& operator>>(istream& in, Date& date)
 	int year, month, day;
 	char c1, c2;
 	in >> year >> c1 >> month >> c2 >> day;
+	if (c1 != '-' || c2 != '-')
+	{
+		throw runtime_error("Bad time format");
+	}
 	date = Date(year, month, day);
 	return in;
 }
